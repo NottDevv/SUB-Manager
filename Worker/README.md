@@ -60,7 +60,8 @@
 5. روی دکمه **Save and Deploy** کلیک کنید.
 
 🎉 **تبریک! پروژه شما با موفقیت نصب و راه‌اندازی شد.**
-اکنون می‌توانید آدرس ورکر خود (مثلاً `https://submanager-worker.your-subdomain.workers.dev`) را باز کنید تا پنل مدیریت اجرا شود.
+اکنون می‌توانید آدرس ورکر خود
+(مثلاً `https://submanager-worker.your-subdomain.workers.dev/admin`) را باز کنید تا پنل مدیریت اجرا شود.
 
 ---
 
