@@ -1,0 +1,6 @@
+{
+  "name": "SubManager Admin & User Panel",
+  "description": "Modern Slate & Emerald VPN subscription manager with Admin sidebar, user traffic monitoring, base64 User-Agent sub-link client routing, QR codes, deep-links, and full PHP edition bundle.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
