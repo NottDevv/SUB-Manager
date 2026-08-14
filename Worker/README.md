@@ -61,7 +61,10 @@
 
 🎉 **تبریک! پروژه شما با موفقیت نصب و راه‌اندازی شد.**
 اکنون می‌توانید آدرس ورکر خود
-(مثلاً `https://submanager-worker.your-subdomain.workers.dev/admin`) را باز کنید تا پنل مدیریت اجرا شود.
+
+(مثلاً `https://submanager-worker.your-subdomain.workers.dev/admin`) 
+
+را باز کنید تا پنل مدیریت اجرا شود.
 
 ---
 
