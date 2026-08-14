@@ -1,0 +1,51 @@
+name: Auto Build and Commit dist
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - 'dist/**'
+      - '**.md'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # دسترسی لازم برای پوش کردن کد
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Commit and Push dist folder
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # اضافه کردن فقط پوشه dist
+          git add dist/
+          
+          # بررسی اینکه آیا تغییری ایجاد شده است یا خیر
+          if git diff --staged --quiet; then
+            echo "✅ No changes to commit in dist folder."
+          else
+            git commit -m "🚀 auto-build: update dist folder [skip ci]"
+            git push
+            echo "✅ Successfully built and pushed dist folder."
+          fi
