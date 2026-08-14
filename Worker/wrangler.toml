@@ -1,9 +1,0 @@
-name = "submanager-worker"
-main = "worker.js"
-compatibility_date = "2024-01-01"
-
-# اتصال دیتابیس D1
-[[d1_databases]]
-binding = "DB"
-database_name = "submanager-db"
-database_id = "کد_دیتا_بیس_شما_در_مرحله_قبل"
