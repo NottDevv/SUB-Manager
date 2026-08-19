@@ -75,7 +75,42 @@
 
 ## 📸 تصاویری از محیط برنامه
 
-*شما می‌توانید اسکرین‌شات‌های پنل کاربری و مدیریت را در این بخش قرار دهید تا جذابیت مخزن افزایش یابد.*
+
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="images/11.jpg" alt="نمای پنل مدیریت (فارسی)">
+    </td>
+    <td width="50%">
+      <img src="images/12.jpg" alt="نمای پنل مدیریت (انگلیسی)">
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="images/13.jpg" alt="ویرایش کاربر و لینک‌ها">
+    </td>
+    <td width="50%">
+      <img src="images/14.jpg" alt="تنظیمات ادمین">
+    </td>
+  </tr>
+    <tr>
+    <td width="50%">
+      <img src="images/15.jpg" alt="ویرایش کاربر و لینک‌ها">
+    </td>
+    <td width="50%">
+      <img src="images/16.jpg" alt="تنظیمات ادمین">
+    </td>
+  </tr>
+   <tr>
+    <td width="50%">
+      <img src="images/17.jpg" alt="صفحه ورود کاربر">
+    </td>
+    <td width="50%">
+      <img src="images/18.jpg" alt="پنل اختصاصی کاربر (دریافت لینک)">
+    </td>
+  </tr>
+</table>
 
 ---
 
