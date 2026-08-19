@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SubManager Auto Deploy Wizard</title>
+    
+    <!-- SubManager Shield Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230284c7'><path d='M12 2.25c-5.3 0-9.75 3.9-10.5 9a11.95 11.95 0 0 0 10.5 10.5c5.3 0 9.75-3.9 10.5-9A11.95 11.95 0 0 0 12 2.25zm-1.2 13.5l-3.3-3.3 1.06-1.06 2.24 2.24 5.24-5.24 1.06 1.06-6.3 6.3z'/></svg>">
+    
+    <!-- Tailwind CSS Official CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Vazirmatn', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+    
+    <!-- FontAwesome Official CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+        
+        body { 
+            font-family: 'Inter', 'Vazirmatn', sans-serif; 
+            background: radial-gradient(circle at center, #0a2540 0%, #020b18 100%); 
+            min-height: 100vh; 
+        }
+
+        .rtl-mode { direction: rtl; }
+        .input-bg { background-color: #07162c; border-color: #122b49; }
+        .card-bg { background-color: #0b1d38; border-color: #16325c; }
+
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-animated:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-animated:active {
+            transform: translateY(1px);
+        }
+
+        .btn-animated::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-animated:hover::after {
+            transform: rotate(45deg) translateX(100%);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.6); }
+        }
+
+        .loading-active {
+            animation: pulse-glow 1.5s infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-200 flex items-center justify-center p-3 md:p-6">
+
+    <!-- Single Main Card (Wider: max-w-2xl, Mobile Optimized) -->
+    <div class="card-bg border rounded-2xl p-4 sm:p-6 md:p-8 max-w-2xl w-full shadow-2xl my-4 sm:my-8 relative z-10">
+        
+        <!-- Top Bar -->
+        <div class="flex items-center justify-between mb-4">
+            <button id="langToggle" onclick="toggleLanguage()" class="btn-animated text-xs bg-slate-800/80 hover:bg-slate-700 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-700 text-slate-300 flex items-center gap-2">
+                <i class="fa-solid fa-globe text-sky-400"></i>
+                <span id="langLabel">فارسی</span>
+            </button>
+            <a href="https://github.com/NottDevv/SUB-Manager" target="_blank" class="text-slate-400 hover:text-white text-2xl transition-transform hover:scale-110">
+                <i class="fa-brands fa-github"></i>
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-6 sm:mb-8">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-500 flex items-center justify-center shadow-lg shadow-sky-500/30 border border-sky-400/40">
+                <svg class="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+            </div>
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight">SubManager Wizard</h1>
+            <p id="subTitle" class="text-slate-400 text-xs sm:text-sm mt-1">Deploy Panel efficiently on Cloudflare Workers</p>
+        </div>
+
+        <!-- Instructions -->
+        <ol id="instructions" class="space-y-2.5 text-xs sm:text-sm text-slate-300 mb-6 sm:mb-8 leading-relaxed bg-slate-900/40 p-3.5 sm:p-4 rounded-xl border border-slate-800/80">
+            <li><span class="font-bold text-white">1.</span> <a href="https://dash.cloudflare.com/sign-up" target="_blank" class="text-sky-400 hover:underline">Sign up</a> a Cloudflare account and verify it.</li>
+            <li><span class="font-bold text-white">2.</span> <a id="tokenLink" href="https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22d1%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=SubManager-Wizard" target="_blank" class="text-sky-400 hover:underline font-semibold">Create an API Token</a> (Pre-configured permissions).</li>
+            <li><span class="font-bold text-white">3.</span> Enter your Account ID, API Token and Panel Path below and click Deploy.</li>
+            <li><span class="font-bold text-white">4.</span> Your panel will be deployed automatically.</li>
+        </ol>
+
+        <!-- Form Inputs -->
+        <form onsubmit="event.preventDefault(); startDeployment();" autocomplete="off" class="space-y-4 mb-6">
+            <div>
+                <label id="lblAccId" class="block text-xs text-slate-400 font-medium mb-1.5">Account ID</label>
+                <input type="text" id="accountId" autocomplete="off" placeholder="Cloudflare Account ID" class="input-bg border w-full py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-sky-500 text-slate-100 placeholder-slate-500 transition-all focus:ring-2 focus:ring-sky-500/20">
+            </div>
+
+            <div>
+                <label id="lblApiToken" class="block text-xs text-slate-400 font-medium mb-1.5">API Token</label>
+                <div class="relative">
+                    <input type="password" id="apiToken" autocomplete="new-password" placeholder="Cloudflare API Token" class="input-bg border w-full py-2.5 sm:py-3 pl-3.5 pr-10 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-sky-500 text-slate-100 placeholder-slate-500 transition-all focus:ring-2 focus:ring-sky-500/20">
+                    <button type="button" onclick="toggleTokenVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-slate-300 transition">
+                        <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                    <label id="lblWorkerName" class="block text-xs text-slate-400 font-medium mb-1.5">Panel Name</label>
+                    <input type="text" id="workerName" value="sub-manager-panel" placeholder="e.g. sub-manager-panel" class="input-bg border w-full py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-sky-500 text-slate-100 placeholder-slate-500 transition-all focus:ring-2 focus:ring-sky-500/20">
+                </div>
+                <div>
+                    <label id="lblAdminPath" class="block text-xs text-slate-400 font-medium mb-1.5">Path</label>
+                    <input type="text" id="adminPath" value="admin" placeholder="e.g. admin" class="input-bg border w-full py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-sky-500 text-slate-100 placeholder-slate-500 transition-all focus:ring-2 focus:ring-sky-500/20">
+                </div>
+            </div>
+
+            <button type="submit" id="deployBtn" class="btn-animated w-full bg-sky-600 hover:bg-sky-500 text-white font-medium py-3 sm:py-3.5 px-4 rounded-xl shadow-lg border border-sky-400/30 flex items-center justify-center gap-2 text-xs sm:text-sm mt-2">
+                <i id="btnIcon" class="fa-solid fa-cloud-arrow-up"></i>
+                <span id="deployBtnText">Deploy Panel</span>
+            </button>
+        </form>
+
+        <!-- Logs Box -->
+        <div id="statusBox" class="hidden mt-6 p-3.5 sm:p-4 input-bg border rounded-xl text-xs font-mono max-h-40 overflow-y-auto">
+            <div id="logs" class="space-y-1"></div>
+        </div>
+
+        <!-- Result Box (Fully Responsive) -->
+        <div id="resultBox" class="hidden mt-6 p-4 sm:p-6 bg-gradient-to-br from-slate-900/90 via-sky-950/40 to-slate-900/90 border border-sky-500/40 rounded-2xl shadow-xl backdrop-blur-md relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl"></div>
+            
+            <div class="flex items-center gap-3 mb-4 border-b border-sky-500/20 pb-3">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-sm shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <h3 id="resTitle" class="text-emerald-400 font-bold text-sm sm:text-base">Deployment Successful!</h3>
+                    <p id="resSubTitle" class="text-slate-400 text-xs">Your panel is live and ready for setup.</p>
+                </div>
+            </div>
+
+            <div class="space-y-3.5 text-xs">
+                <!-- URL Display Box -->
+                <div>
+                    <span id="resUrlLabel" class="block text-slate-400 mb-1.5 font-medium">Panel URL:</span>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-slate-950/80 p-2 sm:p-2.5 rounded-xl border border-slate-800">
+                        <input id="panelUrlInput" type="text" readonly class="bg-transparent border-none text-sky-400 font-mono text-xs w-full focus:outline-none font-semibold truncate px-2 py-1">
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button onclick="copyPanelUrl()" class="flex-1 sm:flex-none px-3 py-1.5 bg-sky-600/30 hover:bg-sky-600/50 text-sky-300 rounded-lg border border-sky-500/30 transition flex items-center justify-center gap-1">
+                                <i class="fa-regular fa-copy"></i>
+                                <span id="copyBtnText">Copy</span>
+                            </button>
+                            <a id="openPanelBtn" href="#" target="_blank" class="flex-1 sm:flex-none px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg transition flex items-center justify-center gap-1 font-medium">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                <span id="openBtnText">Open</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credentials Card -->
+                <div class="bg-slate-900/80 border border-slate-800 p-3 sm:p-3.5 rounded-xl space-y-2">
+                    <div id="credTitle" class="text-slate-300 font-semibold border-b border-slate-800 pb-1.5 flex items-center gap-2 text-xs">
+                        <i class="fa-solid fa-key text-sky-400"></i> Default Login Credentials
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2 font-mono text-slate-200">
+                        <div><span class="text-slate-400" id="userLabel">Username:</span> <span class="text-white font-bold">admin</span></div>
+                        <div><span class="text-slate-400" id="passLabel">Password:</span> <span class="text-white font-bold">123456</span></div>
+                    </div>
+                </div>
+
+                <!-- Security Warning Box -->
+                <div class="bg-amber-950/30 border border-amber-500/40 p-3 sm:p-3.5 rounded-xl text-amber-200 flex items-start gap-2.5">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-400 text-base sm:text-lg mt-0.5 shrink-0"></i>
+                    <p id="secWarning" class="text-xs leading-relaxed">
+                        <strong>Security Alert:</strong> Please change your default username and password immediately in <strong>Admin Settings</strong> after logging in to secure your panel.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const RAW_WORKER_URL = "https://raw.githubusercontent.com/NottDevv/SUB-Manager/main/Worker/worker.js";
+        const D1_DATABASE_NAME = "submanager-db";
+        const D1_BINDING_NAME = "DB";
+        const DIRECT_TOKEN_URL = "https://dash.cloudflare.com/profile/api-tokens?permissionGroupKeys=%5B%7B%22key%22%3A%22workers_scripts%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22d1%22%2C%22type%22%3A%22edit%22%7D%2C%7B%22key%22%3A%22user_details%22%2C%22type%22%3A%22read%22%7D%5D&accountId=*&zoneId=all&name=SubManager-Wizard";
+
+        const CORS_PROXY = "https://corsproxy.io/?";
+        const CF_API_BASE = "https://api.cloudflare.com/client/v4";
+
+        const translations = {
+            en: {
+                langLabel: "فارسی",
+                subTitle: "Deploy Panel efficiently on Cloudflare Workers",
+                steps: [
+                    '<li><span class="font-bold text-white">1.</span> <a href="https://dash.cloudflare.com/sign-up" target="_blank" class="text-sky-400 hover:underline">Sign up</a> a Cloudflare account and verify it.</li>',
+                    `<li><span class="font-bold text-white">2.</span> <a href="${DIRECT_TOKEN_URL}" target="_blank" class="text-sky-400 hover:underline font-semibold">Create an API Token</a> (Pre-configured permissions).</li>`,
+                    '<li><span class="font-bold text-white">3.</span> Enter your Account ID, API Token and Panel Path below and click Deploy.</li>',
+                    '<li><span class="font-bold text-white">4.</span> Your panel will be deployed automatically.</li>'
+                ],
+                lblAccId: "Account ID",
+                lblApiToken: "API Token",
+                lblWorkerName: "Panel Name",
+                lblAdminPath: "Path",
+                accPlaceholder: "Cloudflare Account ID",
+                tokenPlaceholder: "Cloudflare API Token",
+                workerPlaceholder: "e.g. sub-manager-panel",
+                pathPlaceholder: "e.g. admin",
+                deployBtn: "Deploy Panel",
+                resTitle: "Deployment Successful!",
+                resSubTitle: "Your panel is live and ready for setup.",
+                resUrlLabel: "Panel URL:",
+                copyBtnText: "Copy",
+                openBtnText: "Open",
+                credTitle: '<i class="fa-solid fa-key text-sky-400"></i> Default Login Credentials',
+                userLabel: "Username:",
+                passLabel: "Password:",
+                secWarning: "<strong>Security Alert:</strong> Please change your default username and password immediately in <strong>Admin Settings</strong> after logging in to secure your panel."
+            },
+            fa: {
+                langLabel: "English",
+                subTitle: "دپلوی سریع و خودکار پنل روی کلادفلر ورکرز",
+                steps: [
+                    '<li><span class="font-bold text-white">۱.</span> یک حساب در <a href="https://dash.cloudflare.com/sign-up" target="_blank" class="text-sky-400 hover:underline">کلادفلر بسازید</a>.</li>',
+                    `<li><span class="font-bold text-white">۲.</span> <a href="${DIRECT_TOKEN_URL}" target="_blank" class="text-sky-400 hover:underline font-semibold">ایجاد API Token مستقیم</a> (دسترسی‌ها آماده تنظیم شده‌اند).</li>`,
+                    '<li><span class="font-bold text-white">۳.</span> اطلاعات اکانت و مسیر پنل دلخواه را وارد کرده و دپلوی کنید.</li>',
+                    '<li><span class="font-bold text-white">۴.</span> پنل به صورت خودکار متصل و راه‌اندازی می‌شود.</li>'
+                ],
+                lblAccId: "شناسه اکانت (Account ID)",
+                lblApiToken: "توکن کلادفلر (API Token)",
+                lblWorkerName: "نام پنل (Panel Name)",
+                lblAdminPath: "مسیر پنل (Path)",
+                accPlaceholder: "شناسه اکانت کلادفلر",
+                tokenPlaceholder: "توکن API کلادفلر",
+                workerPlaceholder: "مثلاً sub-manager-panel",
+                pathPlaceholder: "مثلاً admin",
+                deployBtn: "شروع دپلوی پنل",
+                resTitle: "دپلوی با موفقیت انجام شد!",
+                resSubTitle: "پنل شما فعال شد و آماده استفاده است.",
+                resUrlLabel: "آدرس پنل شما:",
+                copyBtnText: "کپی",
+                openBtnText: "ورود",
+                credTitle: '<i class="fa-solid fa-key text-sky-400"></i> اطلاعات ورود پیش‌فرض',
+                userLabel: "نام کاربری:",
+                passLabel: "رمز عبور:",
+                secWarning: "<strong>هشدار امنیتی:</strong> لطفاً بلافاصله پس از ورود، از بخش <strong>تنظیمات ادمین (Admin Settings)</strong> نام کاربری و رمز عبور پیش‌فرض را تغییر دهید."
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'fa' : 'en';
+            const langData = translations[currentLang];
+
+            document.body.classList.toggle('rtl-mode', currentLang === 'fa');
+            document.getElementById('langLabel').innerText = langData.langLabel;
+            document.getElementById('subTitle').innerText = langData.subTitle;
+            document.getElementById('instructions').innerHTML = langData.steps.join('');
+            
+            document.getElementById('lblAccId').innerText = langData.lblAccId;
+            document.getElementById('lblApiToken').innerText = langData.lblApiToken;
+            document.getElementById('lblWorkerName').innerText = langData.lblWorkerName;
+            document.getElementById('lblAdminPath').innerText = langData.lblAdminPath;
+
+            document.getElementById('accountId').placeholder = langData.accPlaceholder;
+            document.getElementById('apiToken').placeholder = langData.tokenPlaceholder;
+            document.getElementById('workerName').placeholder = langData.workerPlaceholder;
+            document.getElementById('adminPath').placeholder = langData.pathPlaceholder;
+            
+            document.getElementById('deployBtnText').innerText = langData.deployBtn;
+            document.getElementById('resTitle').innerText = langData.resTitle;
+            document.getElementById('resSubTitle').innerText = langData.resSubTitle;
+            document.getElementById('resUrlLabel').innerText = langData.resUrlLabel;
+            document.getElementById('copyBtnText').innerText = langData.copyBtnText;
+            document.getElementById('openBtnText').innerText = langData.openBtnText;
+            document.getElementById('credTitle').innerHTML = langData.credTitle;
+            document.getElementById('userLabel').innerText = langData.userLabel;
+            document.getElementById('passLabel').innerText = langData.passLabel;
+            document.getElementById('secWarning').innerHTML = langData.secWarning;
+        }
+
+        function toggleTokenVisibility() {
+            const tokenInput = document.getElementById('apiToken');
+            const eyeIcon = document.getElementById('eyeIcon');
+            tokenInput.type = tokenInput.type === 'password' ? 'text' : 'password';
+            eyeIcon.classList.toggle('fa-eye-slash');
+        }
+
+        function copyPanelUrl() {
+            const urlInput = document.getElementById('panelUrlInput');
+            urlInput.select();
+            document.execCommand('copy');
+            const copyBtnText = document.getElementById('copyBtnText');
+            const oldText = copyBtnText.innerText;
+            copyBtnText.innerText = currentLang === 'fa' ? 'کپی شد!' : 'Copied!';
+            setTimeout(() => { copyBtnText.innerText = oldText; }, 2000);
+        }
+
+        function addLog(msg, type = 'info') {
+            const logs = document.getElementById('logs');
+            const color = type === 'error' ? 'text-red-400' : type === 'success' ? 'text-emerald-400' : 'text-slate-300';
+            logs.innerHTML += `<div class="${color}">> ${msg}</div>`;
+            document.getElementById('statusBox').scrollTop = document.getElementById('statusBox').scrollHeight;
+        }
+
+        async function startDeployment() {
+            const accountId = document.getElementById('accountId').value.trim();
+            const apiToken = document.getElementById('apiToken').value.trim();
+            const workerName = document.getElementById('workerName').value.trim().toLowerCase();
+            let adminPath = document.getElementById('adminPath').value.trim().replace(/^\/+|\/+$/g, '');
+
+            if (!adminPath) adminPath = 'admin';
+
+            if (!accountId || !apiToken || !workerName) {
+                alert(currentLang === 'en' ? 'Please fill in all fields.' : 'لطفاً تمامی فیلدها را پر کنید.');
+                return;
+            }
+
+            const deployBtn = document.getElementById('deployBtn');
+            const btnIcon = document.getElementById('btnIcon');
+            const statusBox = document.getElementById('statusBox');
+            const resultBox = document.getElementById('resultBox');
+
+            deployBtn.disabled = true;
+            deployBtn.classList.add('loading-active', 'opacity-80', 'cursor-not-allowed');
+            btnIcon.className = 'fa-solid fa-spinner fa-spin';
+            statusBox.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+            document.getElementById('logs').innerHTML = '';
+
+            try {
+                addLog('Fetching official worker script from GitHub...');
+                const workerCodeRes = await fetch(RAW_WORKER_URL);
+                if (!workerCodeRes.ok) throw new Error('Failed to fetch worker script from GitHub repository.');
+                let workerCode = await workerCodeRes.text();
+                addLog('Worker script downloaded successfully.', 'success');
+
+                if (adminPath !== 'admin') {
+                    addLog(`Configuring custom admin path: /${adminPath}`);
+                    workerCode = workerCode.replaceAll("'/admin'", `'/${adminPath}'`)
+                                           .replaceAll('"/admin"', `"/${adminPath}"`)
+                                           .replaceAll('`/admin', `\`/${adminPath}`);
+                }
+
+                addLog(`Checking D1 Database (${D1_DATABASE_NAME})...`);
+                
+                let dbId = null;
+                const listDbUrl = `${CORS_PROXY}${encodeURIComponent(`${CF_API_BASE}/accounts/${accountId}/d1/database`)}`;
+                const listDbRes = await fetch(listDbUrl, {
+                    headers: { 'Authorization': `Bearer ${apiToken}` }
+                });
+                
+                if (listDbRes.ok) {
+                    const listData = await listDbRes.json();
+                    dbId = listData.result?.find(d => d.name === D1_DATABASE_NAME)?.uuid;
+                }
+
+                if (!dbId) {
+                    addLog('D1 not found. Creating new D1 Database...');
+                    const createDbUrl = `${CORS_PROXY}${encodeURIComponent(`${CF_API_BASE}/accounts/${accountId}/d1/database`)}`;
+                    const createDbRes = await fetch(createDbUrl, {
+                        method: 'POST',
+                        headers: { 
+                            'Authorization': `Bearer ${apiToken}`,
+                            'Content-Type': 'application/json' 
+                        },
+                        body: JSON.stringify({ name: D1_DATABASE_NAME })
+                    });
+
+                    const dbData = await createDbRes.json();
+                    dbId = dbData.result?.uuid;
+                    if (!dbData.success && dbData.errors?.[0]) {
+                        throw new Error(`D1 Creation Failed: ${dbData.errors[0].message}`);
+                    }
+                }
+
+                if (!dbId) throw new Error('Could not resolve D1 Database ID.');
+                addLog(`D1 Database Ready (ID: ${dbId})`, 'success');
+
+                addLog('Deploying Worker with DB Binding...');
+                
+                const metadata = {
+                    main_module: 'worker.js',
+                    bindings: [
+                        { type: 'd1', name: D1_BINDING_NAME, database_id: dbId }
+                    ],
+                    compatibility_date: '2024-01-01'
+                };
+
+                const formData = new FormData();
+                formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }), 'metadata.json');
+                formData.append('worker.js', new Blob([workerCode], { type: 'application/javascript+module' }), 'worker.js');
+
+                const uploadUrl = `${CORS_PROXY}${encodeURIComponent(`${CF_API_BASE}/accounts/${accountId}/workers/scripts/${workerName}`)}`;
+                const uploadRes = await fetch(uploadUrl, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${apiToken}` },
+                    body: formData
+                });
+
+                const uploadData = await uploadRes.json();
+                if (!uploadRes.ok || !uploadData.success) {
+                    throw new Error(uploadData.errors?.[0]?.message || 'Worker deployment failed.');
+                }
+                addLog('Worker script deployed successfully!', 'success');
+
+                addLog('Enabling Subdomain...');
+                const subEnableUrl = `${CORS_PROXY}${encodeURIComponent(`${CF_API_BASE}/accounts/${accountId}/workers/scripts/${workerName}/subdomain`)}`;
+                await fetch(subEnableUrl, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${apiToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ enabled: true })
+                });
+
+                const subInfoUrl = `${CORS_PROXY}${encodeURIComponent(`${CF_API_BASE}/accounts/${accountId}/workers/subdomain`)}`;
+                const subRes = await fetch(subInfoUrl, {
+                    headers: { 'Authorization': `Bearer ${apiToken}` }
+                });
+                const subData = await subRes.json();
+                const subDomain = subData.result?.subdomain || 'workers';
+                const finalUrl = `https://${workerName}.${subDomain}.workers.dev/${adminPath}`;
+
+                document.getElementById('panelUrlInput').value = finalUrl;
+                document.getElementById('openPanelBtn').href = finalUrl;
+                resultBox.classList.remove('hidden');
+                addLog('Deployment Completed Successfully! 🎉', 'success');
+
+            } catch (err) {
+                addLog(`Error: ${err.message}`, 'error');
+            } finally {
+                deployBtn.disabled = false;
+                deployBtn.classList.remove('loading-active', 'opacity-80', 'cursor-not-allowed');
+                btnIcon.className = 'fa-solid fa-cloud-arrow-up';
+            }
+        }
+    </script>
+</body>
+</html>
