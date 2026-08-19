@@ -1,0 +1,346 @@
+@import "tailwindcss";
+
+@theme {
+  --color-slate-950: var(--th-bg-950);
+  --color-slate-900: var(--th-bg-900);
+  --color-slate-800: var(--th-bg-800);
+  --color-slate-700: var(--th-bg-700);
+  --color-slate-600: var(--th-bg-600);
+  --color-slate-500: var(--th-bg-500);
+  --color-slate-400: var(--th-bg-400);
+  --color-slate-300: var(--th-bg-300);
+  --color-slate-200: var(--th-bg-200);
+  --color-slate-100: var(--th-bg-100);
+
+  --color-emerald-300: var(--th-pr-300);
+  --color-emerald-400: var(--th-pr-400);
+  --color-emerald-500: var(--th-pr-500);
+  --color-emerald-600: var(--th-pr-600);
+  --color-emerald-800: var(--th-pr-800);
+  --color-emerald-900: var(--th-pr-900);
+  --color-emerald-950: var(--th-pr-950);
+
+  --color-cyan-400: var(--th-cy-400);
+  --color-cyan-500: var(--th-cy-500);
+
+  --color-teal-400: var(--th-te-400);
+  --color-teal-500: var(--th-te-500);
+}
+
+:root {
+  /* Default Dark (Original Black with Gradient applied in body below) */
+  --th-bg-950: #020617; /* Original dark */
+  --th-bg-900: #0f172a; /* Card background */
+  --th-bg-800: #1e293b; /* Borders */
+  --th-bg-700: #334155;
+  --th-bg-600: #475569;
+  --th-bg-500: #64748b;
+  --th-bg-400: #94a3b8;
+  --th-bg-300: #cbd5e1;
+  --th-bg-200: #e2e8f0;
+  --th-bg-100: #f1f5f9;
+
+  --th-pr-300: #6ee7b7;
+  --th-pr-400: #34d399;
+  --th-pr-500: #10b981;
+  --th-pr-600: #059669;
+  --th-pr-800: #065f46;
+  --th-pr-900: #064e3b;
+  --th-pr-950: #022c22;
+
+  --th-cy-400: #22d3ee;
+  --th-cy-500: #06b6d4;
+
+  --th-te-400: #2dd4bf;
+  --th-te-500: #14b8a6;
+}
+
+[data-theme="light"] {
+  /* Google Drive Style Light Theme */
+  --th-bg-950: #f8fafd; /* Drive background color */
+  --th-bg-900: #ffffff; /* Drive white cards */
+  --th-bg-800: #c7cdd1; /* Drive borders */
+  --th-bg-700: #5f6368; /* Drive icon color */
+  --th-bg-600: #5f6368; 
+  --th-bg-500: #5f6368; 
+  --th-bg-400: #3c4043; /* Secondary text */
+  --th-bg-300: #202124; /* Primary text */
+  --th-bg-200: #202124; 
+  --th-bg-100: #1f1f1f; /* Strong text */
+
+  /* Blue primary instead of green for Drive style */
+  --th-pr-300: #6ab04c;
+  --th-pr-400: #0b57d0; /* Drive Blue */
+  --th-pr-500: #0b57d0; /* Drive Blue */
+  --th-pr-600: #0842a0; /* Drive Blue Hover */
+  --th-pr-800: #c2e7ff; /* Drive Light Blue Background */
+  --th-pr-900: #d3e3fd; /* Drive Light Blue Background 2 */
+  --th-pr-950: #f0f4f9;
+
+  --th-cy-400: #0b57d0;
+  --th-cy-500: #0842a0;
+
+  --th-te-400: #0b57d0;
+  --th-te-500: #0842a0;
+}
+
+[data-theme="ocean"] {
+  /* Modern Navy / uIndex.org style */
+  --th-bg-950: #0b1121; /* Very dark navy background */
+  --th-bg-900: #162032; /* Slightly lighter navy for cards */
+  --th-bg-800: #212f45; /* Borders / input backgrounds */
+  --th-bg-700: #334155;
+  --th-bg-600: #475569;
+  --th-bg-500: #64748b; 
+  --th-bg-400: #94a3b8; /* Text muted */
+  --th-bg-300: #cbd5e1; /* Text body */
+  --th-bg-200: #e2e8f0;
+  --th-bg-100: #f8fafc; /* Text heading */
+
+  /* uIndex style cyan/blue accents */
+  --th-pr-300: #67e8f9; 
+  --th-pr-400: #22d3ee; 
+  --th-pr-500: #06b6d4; /* Bright cyan primary */
+  --th-pr-600: #0891b2; 
+  --th-pr-800: #164e63; 
+  --th-pr-900: #083344; 
+  --th-pr-950: #042f2e; 
+
+  --th-cy-400: #22d3ee;
+  --th-cy-500: #06b6d4;
+
+  --th-te-400: #3b82f6;
+  --th-te-500: #2563eb;
+}
+
+@layer base {
+  html[dir="rtl"] {
+    font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+  }
+  html[dir="ltr"] {
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  }
+  body {
+    background-color: var(--th-bg-950);
+    color: var(--th-bg-100);
+    /* Default dark theme gradient as requested */
+    background: linear-gradient(180deg, #020617 0%, #0a1128 100%);
+    background-attachment: fixed;
+  }
+  
+  /* Reset background for other themes so they don't inherit the dark gradient */
+  body[data-theme="light"] {
+    background: var(--th-bg-950);
+  }
+  body[data-theme="ocean"] {
+    background: var(--th-bg-950);
+  }
+}
+
+/* --- LIGHT THEME SPECIFIC OVERRIDES (Drive Style) --- */
+body[data-theme="light"] button {
+  border-radius: 9999px; /* Pill shaped buttons like Drive */
+}
+body[data-theme="light"] .rounded-3xl,
+body[data-theme="light"] .rounded-2xl,
+body[data-theme="light"] .rounded-xl {
+  border-radius: 24px; /* Drive standard card radius */
+}
+
+/* Light Theme Action Buttons (Google Drive Style: solid Blue with white icon, hover becomes light blue with black icon) */
+body[data-theme="light"] .btn-action-copy,
+body[data-theme="light"] .btn-action-qr {
+  background-color: #0b57d0 !important;
+  color: #ffffff !important;
+  border: 1px solid #0b57d0 !important;
+  opacity: 1 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+body[data-theme="light"] .btn-action-copy svg,
+body[data-theme="light"] .btn-action-qr svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  transition: color 0.2s ease, stroke 0.2s ease !important;
+}
+
+body[data-theme="light"] .btn-action-copy:hover,
+body[data-theme="light"] .btn-action-qr:hover {
+  background-color: #d3e3fd !important;
+  color: #1f1f1f !important;
+  border-color: #c7cdd1 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+body[data-theme="light"] .btn-action-copy:hover svg,
+body[data-theme="light"] .btn-action-qr:hover svg {
+  color: #1f1f1f !important;
+  stroke: #1f1f1f !important;
+  filter: none !important;
+}
+
+/* Add some shadow removal and border emphasis for Light theme to match Drive */
+body[data-theme="light"] .shadow-lg,
+body[data-theme="light"] .shadow-2xl {
+  box-shadow: none !important;
+  border: 1px solid var(--th-bg-800);
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--th-bg-950);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--th-bg-800);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--th-pr-500);
+}
+
+/* Gradient Border Class */
+.gradient-border-emerald {
+  position: relative;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+.gradient-border-emerald::before {
+  content: '';
+  position: absolute;
+  top: -1px; bottom: -1px;
+  left: -1px; right: -1px;
+  background: linear-gradient(135deg, var(--th-pr-500) 0%, var(--th-pr-800) 50%, var(--th-bg-800) 100%);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Hide gradient borders in light mode for cleaner Drive look */
+body[data-theme="light"] .gradient-border-emerald::before {
+  display: none;
+}
+body[data-theme="light"] .gradient-border-emerald {
+  border: 1px solid var(--th-bg-800);
+}
+
+/* --- SVG HOVER & ACTIVE ANIMATIONS --- */
+button svg, a svg, .icon-animate {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+}
+button:hover svg, a:hover svg {
+  transform: scale(1.1);
+}
+button:active svg, a:active svg {
+  transform: scale(0.92);
+}
+
+/* Fix light mode svg: no glowing shadows */
+body[data-theme="light"] button:hover svg,
+body[data-theme="light"] a:hover svg {
+  filter: none !important;
+}
+
+/* --- SIDEBAR ICONS ANIMATION (Users, Add User, Settings) --- */
+@keyframes navUsersBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.12);
+  }
+}
+
+@keyframes navAddUserPulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  40% {
+    transform: scale(1.18) rotate(-8deg);
+  }
+  70% {
+    transform: scale(1.15) rotate(8deg);
+  }
+}
+
+@keyframes navSettingsSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sidebar-icon-users {
+  animation: navUsersBounce 3s ease-in-out infinite;
+}
+.sidebar-icon-adduser {
+  animation: navAddUserPulse 2.8s ease-in-out infinite;
+}
+.sidebar-icon-settings {
+  animation: navSettingsSpin 8s linear infinite;
+}
+
+.group\/navbtn:hover .sidebar-icon-users {
+  animation: navUsersBounce 0.8s ease-in-out infinite;
+}
+.group\/navbtn:hover .sidebar-icon-adduser {
+  animation: navAddUserPulse 0.8s ease-in-out infinite;
+}
+.group\/navbtn:hover .sidebar-icon-settings {
+  animation: navSettingsSpin 1.5s linear infinite;
+}
+
+/* --- EDIT, DELETE & LOGOUT VIBRANT STYLING ACROSS ALL THEMES --- */
+.btn-edit {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease, transform 0.15s ease !important;
+}
+.btn-edit:hover {
+  opacity: 0.75 !important;
+  transform: scale(0.98);
+}
+.icon-edit {
+  color: inherit;
+}
+
+.btn-delete {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease, transform 0.15s ease !important;
+}
+.btn-delete:hover {
+  opacity: 0.75 !important;
+  transform: scale(0.98);
+}
+.icon-delete {
+  color: inherit;
+}
+
+.btn-logout {
+  opacity: 1 !important;
+  transition: opacity 0.2s ease, transform 0.15s ease !important;
+}
+.btn-logout:hover {
+  opacity: 0.75 !important;
+  transform: scale(0.98);
+}
+.icon-logout {
+  color: inherit;
+}
+
+/* Live Pulse Effect */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+}
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
