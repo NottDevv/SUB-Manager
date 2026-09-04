@@ -80,36 +80,29 @@
 <table>
   <tr>
     <td width="50%">
-      <img src="images/11.jpg" alt="نمای پنل مدیریت (فارسی)">
+      <img src="images/1.png" alt="نمای پنل مدیریت (فارسی)">
     </td>
     <td width="50%">
-      <img src="images/12.jpg" alt="نمای پنل مدیریت (انگلیسی)">
+      <img src="images/2.png" alt="نمای پنل مدیریت (انگلیسی)">
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <img src="images/13.jpg" alt="ویرایش کاربر و لینک‌ها">
+      <img src="images/3.png" alt="ویرایش کاربر و لینک‌ها">
     </td>
     <td width="50%">
-      <img src="images/14.jpg" alt="تنظیمات ادمین">
+      <img src="images/4.png" alt="تنظیمات ادمین">
     </td>
   </tr>
     <tr>
     <td width="50%">
-      <img src="images/15.jpg" alt="ویرایش کاربر و لینک‌ها">
+      <img src="images/5.png" alt="ویرایش کاربر و لینک‌ها">
     </td>
     <td width="50%">
-      <img src="images/16.jpg" alt="تنظیمات ادمین">
+      <img src="images/6.png" alt="تنظیمات ادمین">
     </td>
   </tr>
    <tr>
-    <td width="50%">
-      <img src="images/17.jpg" alt="صفحه ورود کاربر">
-    </td>
-    <td width="50%">
-      <img src="images/18.jpg" alt="پنل اختصاصی کاربر (دریافت لینک)">
-    </td>
-  </tr>
 </table>
 
 ---
