@@ -1245,11 +1245,15 @@ export default {
     // =========================================================================
     // 16. DEFAULT ROUTE: Block any other path (including /) with 404
     // =========================================================================
-    return new Response('404 Not Found', {
-      status: 404,
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        ...getCorsHeaders(request),
+  if (pathname === '/') {
+    return Response.redirect('https://soft98.ir', 302);
+  }
+
+  return new Response('404 Not Found', {
+    status: 404,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      ...getCorsHeaders(request),
       },
     });
   },
