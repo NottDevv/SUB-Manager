@@ -2,7 +2,7 @@
   <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=250&section=header&text=🌟%20NotDev%20SubManager%20Pro%20🌟&descAlignY=60&descAlign=50" alt="Header Animation" />
 </p>
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Vazirmatn&weight=600&size=20&pause=1200&color=3B82F6&center=true&vCenter=true&width=750&lines=%D8%A7%D8%A8%D8%B2%D8%A7%D8%B1%20%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF%20%D9%85%D8%AF%DB%8C%D8%B1%DB%8C%D8%AA%20%D9%84%DB%8C%D9%86%DA%A9%E2%80%8C%D9%87%D8%A7%DB%8C%20%D8%B3%D8%A7%D8%A8%D8%B3%DA%A9%D8%B1%DB%8C%D9%BE%D8%B4%D9%86;%D8%B1%D8%A7%D8%A8%D8%B7%20%DA%A9%D8%A7%D8%B1%D8%A8%D8%B1%DB%8C%20%D9%85%D8%AF%D8%B1%D9%86%20%D9%88%20%D8%A8%D8%B3%DB%8C%D8%A7%D8%B1%20%D8%B3%D8%A7%D8%AF%D9%87;%D9%82%D8%A7%D8%A8%D9%84%DB%8C%D8%AA%20%D8%A7%D8%AC%D8%B1%D8%A7%20%D8%B1%D9%88%DB%8C%20%D9%88%D8%B1%DA%A9%D8%B1%20%DA%A9%D9%84%D8%A7%D8%AF%D9%81%D9%84%D8%B1%20(%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86)" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Vazirmatn&weight=700&size=24&pause=1200&color=3B82F6&center=true&vCenter=true&width=850&lines=%D8%A7%D8%A8%D8%B2%D8%A7%D8%B1%20%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF%20%D9%85%D8%AF%DB%8C%D8%B1%DB%8C%D8%AA%20%D9%84%DB%8C%D9%86%DA%A9%E2%80%8C%D9%87%D8%A7%DB%8C%20%D8%B3%D8%A7%D8%A8%D8%B3%DA%A9%D8%B1%DB%8C%D9%BE%D8%B4%D9%86;%D8%B1%D8%A7%D8%A8%D8%B7%20%DA%A9%D8%A7%D8%B1%D8%A8%D8%B1%DB%8C%20%D9%85%D8%AF%D8%B1%D9%86%20%D9%88%20%D8%A8%D8%B3%DB%8C%D8%A7%D8%B1%20%D8%B3%D8%A7%D8%AF%D9%87;%D9%82%D8%A7%D8%A8%D9%84%DB%8C%D8%AA%20%D8%A7%D8%AC%D8%B1%D8%A7%20%D8%B1%D9%88%DB%8C%20%D9%88%D8%B1%DA%A9%D8%B1%20%DA%A9%D9%84%D8%A7%D8%AF%D9%81%D9%84%D8%B1%20(%D8%B1%D8%A7%DB%8C%DA%AF%D8%A7%D9%86)" alt="Typing SVG" />
 </p>
 
 <p align="center">
